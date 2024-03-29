@@ -1,0 +1,19 @@
+.masthead {
+  position: relative;
+  background-color: #343a40;
+  background: url("/assets/bg-library.webp") no-repeat center center;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+.masthead::before {
+  content: "";
+  position: absolute;
+  background-color: #dd813a;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.2;
+}
