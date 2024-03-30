@@ -26,6 +26,7 @@ const CategorySection: React.FC = () => {
         .map((category, index) => (
           <CategoryCard
             key={index}
+            id={category.id}
             category={category.name}
             color={Utils.getRandomColor()}
           />
@@ -34,6 +35,7 @@ const CategorySection: React.FC = () => {
       return categories.map((category, index) => (
         <div key={index} className={`transform animate-fade-in-down`}>
           <CategoryCard
+            id={category.id}
             category={category.name}
             color={Utils.getRandomColor()}
           />

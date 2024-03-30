@@ -34,9 +34,13 @@ const BookSection: React.FC = () => {
           <h1 className="text-2xl font-bold text-center">Featured Books</h1>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-          {renderBooks()}
-        </div>
+        {books.length ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-7 w-full">
+            {renderBooks()}
+          </div>
+        ) : (
+          <div className="text-center text-xl my-20">No Books Available</div>
+        )}
       </section>
     </div>
   )

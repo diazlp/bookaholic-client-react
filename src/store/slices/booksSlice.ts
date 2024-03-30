@@ -33,6 +33,20 @@ export const fetchBooks = createAsyncThunk<{ count: number; rows: Book[] }>(
   }
 )
 
+// Async action to fetch category books
+export const fetchCategoryBooks = createAsyncThunk<
+  {
+    count: number
+    rows: Book[]
+  },
+  number
+>('books/fetchCategoryBooks', async (id: number) => {
+  const response = await axios.get<{ count: number; rows: Book[] }>(
+    `${process.env.API_BASE_URL}/categories/${id}/books`
+  )
+  return response.data
+})
+
 // Books slice
 const bookSlice = createSlice({
   name: 'books',
@@ -58,6 +72,20 @@ const bookSlice = createSlice({
         }
       )
       .addCase(fetchBooks.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message ?? 'Unknown error'
+      })
+      .addCase(fetchCategoryBooks.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(
+        fetchCategoryBooks.fulfilled,
+        (state, action: PayloadAction<{ count: number; rows: Book[] }>) => {
+          state.status = 'succeeded'
+          state.books = action.payload
+        }
+      )
+      .addCase(fetchCategoryBooks.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message ?? 'Unknown error'
       })
