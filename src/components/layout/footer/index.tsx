@@ -5,7 +5,7 @@ const currentYear = new Date().getFullYear()
 
 const Footer: React.FC = () => {
   return (
-    <footer>
+    <footer className="p-5">
       <div className="flex justify-center">
         <div className="flex flex-col">
           <ul className="flex gap-3">
