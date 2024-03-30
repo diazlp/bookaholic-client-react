@@ -1,8 +1,7 @@
-import React, { ChangeEvent, Fragment, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { Fragment } from 'react'
 import { CiCirclePlus } from 'react-icons/ci'
 import { IoCloseCircleOutline, IoCheckmarkCircleOutline } from 'react-icons/io5'
-import { createCategory } from '../../store/slices/categoriesSlice'
+import useCreateCategory from '../../hooks/useCreateCategory'
 
 type CategoryInputProps = {
   isShowAllCategories: boolean
@@ -11,26 +10,14 @@ type CategoryInputProps = {
 const CategoryInput: React.FC<CategoryInputProps> = ({
   isShowAllCategories
 }) => {
-  const dispatch = useDispatch()
-  const [addCategoryVisible, setAddCategoryVisible] = useState<boolean>(false)
-  const [newCategoryName, setNewCategoryName] = useState<string>('')
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewCategoryName(e.target.value)
-  }
-
-  const handleCancelAddCategory = () => {
-    setAddCategoryVisible(false)
-    setNewCategoryName('')
-  }
-
-  const handleConfirmAddCategory = () => {
-    if (newCategoryName) {
-      dispatch(createCategory(newCategoryName) as any)
-      setAddCategoryVisible(false)
-      setNewCategoryName('')
-    }
-  }
+  const {
+    addCategoryVisible,
+    newCategoryName,
+    handleInputChange,
+    handleCancelAddCategory,
+    handleConfirmAddCategory,
+    setAddCategoryVisible
+  } = useCreateCategory()
 
   if (!addCategoryVisible) {
     return (

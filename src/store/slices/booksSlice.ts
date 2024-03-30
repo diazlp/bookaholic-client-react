@@ -22,16 +22,30 @@ export interface BookState {
   error: string | null
 }
 
+export interface fetchBookQueryParams {
+  title?: string
+  minYear?: number
+  maxYear?: number
+  minPage?: number
+  maxPage?: number
+  sortByTitle?: 'ASC' | 'DESC' | ''
+}
+
 // Async action to fetch books
-export const fetchBooks = createAsyncThunk<{ count: number; rows: Book[] }>(
-  'books/fetchBooks',
-  async () => {
-    const response = await axios.get<{ count: number; rows: Book[] }>(
-      `${process.env.API_BASE_URL}/books`
-    )
-    return response.data
+export const fetchBooks = createAsyncThunk<
+  { count: number; rows: Book[] },
+  fetchBookQueryParams | undefined
+>('books/fetchBooks', async (params: fetchBookQueryParams | undefined) => {
+  let url = `${process.env.API_BASE_URL}/books`
+
+  if (params) {
+    const queryString = new URLSearchParams(params as any).toString()
+    url += `?${queryString}`
   }
-)
+
+  const response = await axios.get<{ count: number; rows: Book[] }>(url)
+  return response.data
+})
 
 // Async action to fetch category books
 export const fetchCategoryBooks = createAsyncThunk<
