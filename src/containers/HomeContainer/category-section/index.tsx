@@ -3,9 +3,9 @@ import {
   MdOutlineKeyboardArrowRight,
   MdOutlineKeyboardArrowDown
 } from 'react-icons/md'
-import CategoryCard from '../../../components/category-card'
 import Utils from '../../../lib/utils'
 import useFetchCategories from '../../../hooks/useFetchCategories'
+import CategoryCard from '../../../components/category-card'
 
 const CategorySection: React.FC = () => {
   const { categories, status, error, showAllCategories, toggleCategories } =

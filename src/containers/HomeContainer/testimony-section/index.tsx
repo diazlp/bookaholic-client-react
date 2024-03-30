@@ -11,7 +11,7 @@ const TestimonySection: React.FC = () => {
           <TestimonyItem
             image_url="/assets/testimony-3.jpg"
             name="Margaret E."
-            testimony={'"This is fantastic! Thanks so much guys!"'}
+            testimony={'"This is fantastic! Thank you so much guys!"'}
           />
           <TestimonyItem
             image_url="/assets/testimony-2.jpg"
