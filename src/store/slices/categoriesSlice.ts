@@ -46,8 +46,7 @@ const categoriesSlice = createSlice({
         fetchCategories.fulfilled,
         (state, action: PayloadAction<{ count: number; rows: Category[] }>) => {
           state.status = 'succeeded'
-          state.categories.count = action.payload.count
-          state.categories.rows = action.payload.rows
+          state.categories = action.payload
         }
       )
       .addCase(fetchCategories.rejected, (state, action) => {

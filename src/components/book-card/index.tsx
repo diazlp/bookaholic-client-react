@@ -24,7 +24,7 @@ const BookCard: React.FC<BookCardProps> = ({
         src={image_url}
         alt={title}
       />
-      <div className="px-6 py-4">
+      <div className="flex flex-col px-6 py-4 h-[380px]">
         <div className="font-bold text-xl mb-1">
           {title} ({release_year.toString()})
         </div>
@@ -32,7 +32,9 @@ const BookCard: React.FC<BookCardProps> = ({
           {total_page.toString()} pages
         </div>
         <p className="text-gray-700 mb-2">{description}</p>
-        <p className="text-gray-700 font-bold">Price: {price}</p>
+        <div className="mt-auto">
+          <p className="text-gray-700 font-bold">Price: {price}</p>
+        </div>
       </div>
     </div>
   )
