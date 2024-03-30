@@ -6,6 +6,7 @@ import {
 import Utils from '../../../lib/utils'
 import useFetchCategories from '../../../hooks/useFetchCategories'
 import CategoryCard from '../../../components/category-card'
+import CategoryInput from '../../../components/category-input'
 
 const CategorySection: React.FC = () => {
   const { categories, status, error, showAllCategories, toggleCategories } =
@@ -67,8 +68,11 @@ const CategorySection: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 items-center">
           {renderCategories()}
+          {showAllCategories && (
+            <CategoryInput isShowAllCategories={showAllCategories} />
+          )}
         </div>
       </section>
     </div>

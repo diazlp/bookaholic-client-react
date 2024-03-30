@@ -25,6 +25,20 @@ export const fetchCategories = createAsyncThunk<{
   return response.data
 })
 
+// Async action to create new category
+export const createCategory = createAsyncThunk<
+  { message: string; data: Category },
+  string
+>('categories/createCategory', async (categoryName: string) => {
+  const response = await axios.post<{ message: string; data: Category }>(
+    `${process.env.API_BASE_URL}/categories`,
+    {
+      name: categoryName
+    }
+  )
+  return response.data
+})
+
 // Categories slice
 const categoriesSlice = createSlice({
   name: 'categories',
@@ -50,6 +64,20 @@ const categoriesSlice = createSlice({
         }
       )
       .addCase(fetchCategories.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message ?? 'Unknown error'
+      })
+      .addCase(createCategory.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(
+        createCategory.fulfilled,
+        (state, action: PayloadAction<{ message: string; data: Category }>) => {
+          state.status = 'succeeded'
+          state.categories.rows.push(action.payload.data)
+        }
+      )
+      .addCase(createCategory.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message ?? 'Unknown error'
       })
