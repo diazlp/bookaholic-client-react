@@ -1,48 +1,17 @@
-import React, { ChangeEvent, useState } from 'react'
+import React from 'react'
 import { FaSearch, FaFilter } from 'react-icons/fa'
-import { useDispatch } from 'react-redux'
-import { fetchBookQueryParams, fetchBooks } from '../../store/slices/booksSlice'
 import FilterOption from './filter-option'
-
-const initialSearchFilter: fetchBookQueryParams = {
-  title: '',
-  minYear: 1900,
-  maxYear: 2024,
-  minPage: 0,
-  maxPage: 10000,
-  sortByTitle: ''
-}
+import useSearchBooks from '../../hooks/useSearchBooks'
 
 const SearchInput: React.FC = () => {
-  const dispatch = useDispatch()
-  const [searchFilterVisible, setSearchFilterVisible] = useState<boolean>(false)
-  const [searchBookParams, setSearchBookParams] =
-    useState<fetchBookQueryParams>(initialSearchFilter)
-
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setSearchBookParams((prevParams) => ({
-      ...prevParams,
-      [e.target.name]: e.target.value
-    }))
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      dispatch(fetchBooks(searchBookParams) as any)
-      setSearchFilterVisible(false)
-    }
-  }
-
-  const handleSearchBook = () => {
-    dispatch(fetchBooks(searchBookParams) as any)
-    setSearchFilterVisible(false)
-  }
-
-  const toggleDropdown = () => {
-    setSearchFilterVisible(!searchFilterVisible)
-  }
+  const {
+    searchFilterVisible,
+    searchBookParams,
+    handleInputChange,
+    handleKeyDown,
+    handleSearchBook,
+    toggleDropdown
+  } = useSearchBooks()
 
   return (
     <section className="flex items-center z-10 justify-center relative">
