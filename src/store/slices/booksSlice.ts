@@ -31,6 +31,16 @@ export interface fetchBookQueryParams {
   sortByTitle?: 'ASC' | 'DESC' | ''
 }
 
+export interface CreateBookPayload {
+  title: ''
+  description: string
+  image_url: string
+  release_year: number | string
+  price: string
+  total_page: number | string
+  category_id: number | string
+}
+
 // Async action to fetch books
 export const fetchBooks = createAsyncThunk<
   { count: number; rows: Book[] },
@@ -57,6 +67,18 @@ export const fetchCategoryBooks = createAsyncThunk<
 >('books/fetchCategoryBooks', async (id: number) => {
   const response = await axios.get<{ count: number; rows: Book[] }>(
     `${process.env.API_BASE_URL}/categories/${id}/books`
+  )
+  return response.data
+})
+
+// Async action to create new book
+export const createBook = createAsyncThunk<
+  { message: string; data: Book },
+  CreateBookPayload
+>('books/createBook', async (bookPayload: CreateBookPayload) => {
+  const response = await axios.post<{ message: string; data: Book }>(
+    `${process.env.API_BASE_URL}/books`,
+    bookPayload
   )
   return response.data
 })
@@ -100,6 +122,20 @@ const bookSlice = createSlice({
         }
       )
       .addCase(fetchCategoryBooks.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message ?? 'Unknown error'
+      })
+      .addCase(createBook.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(
+        createBook.fulfilled,
+        (state, action: PayloadAction<{ message: string; data: Book }>) => {
+          state.status = 'succeeded'
+          state.books.rows.push(action.payload.data)
+        }
+      )
+      .addCase(createBook.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message ?? 'Unknown error'
       })

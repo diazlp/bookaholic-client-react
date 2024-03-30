@@ -1,6 +1,7 @@
 import React from 'react'
 import BookCard from '../../../components/book-card'
 import useFetchBooks from '../../../hooks/useFetchBooks'
+import BookInput from '../../../components/book-input'
 
 const BookSection: React.FC = () => {
   const { books, status, error } = useFetchBooks()
@@ -37,9 +38,12 @@ const BookSection: React.FC = () => {
         {books.length ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-7 w-full">
             {renderBooks()}
+            <BookInput />
           </div>
         ) : (
-          <div className="text-center text-xl my-20">No Books Available</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-7 w-full">
+            <BookInput />
+          </div>
         )}
       </section>
     </div>

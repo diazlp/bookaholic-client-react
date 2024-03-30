@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchCategoryBooks } from '../../store/slices/booksSlice'
+import { AppDispatch } from '../../store'
 
 type CategoryCardProps = {
   id: number
@@ -9,7 +10,7 @@ type CategoryCardProps = {
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ id, category, color }) => {
-  const dispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
 
   return (
     <div

@@ -1,5 +1,6 @@
 import { useState, ChangeEvent } from 'react'
 import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../store'
 import { createCategory } from '../store/slices/categoriesSlice'
 
 interface useCreateCategoryResult {
@@ -12,7 +13,7 @@ interface useCreateCategoryResult {
 }
 
 const useCreateCategory = (): useCreateCategoryResult => {
-  const dispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
   const [addCategoryVisible, setAddCategoryVisible] = useState<boolean>(false)
   const [newCategoryName, setNewCategoryName] = useState<string>('')
 
