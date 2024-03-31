@@ -10,10 +10,11 @@ export interface Book {
   price: string
   total_page: number
   thickness: string
-  category: {
+  Category?: {
     id: number
     name: string
   }
+  category_id?: number
 }
 
 export interface BookState {
@@ -31,14 +32,19 @@ export interface fetchBookQueryParams {
   sortByTitle?: 'ASC' | 'DESC' | ''
 }
 
-export interface CreateBookPayload {
-  title: ''
+export interface CreateBookArgs {
+  title: string
   description: string
   image_url: string
   release_year: number | string
   price: string
   total_page: number | string
   category_id: number | string
+}
+
+interface EditBookArgs {
+  bookId: number
+  payload: CreateBookArgs
 }
 
 // Async action to fetch books
@@ -74,11 +80,34 @@ export const fetchCategoryBooks = createAsyncThunk<
 // Async action to create new book
 export const createBook = createAsyncThunk<
   { message: string; data: Book },
-  CreateBookPayload
->('books/createBook', async (bookPayload: CreateBookPayload) => {
+  CreateBookArgs
+>('books/createBook', async (bookPayload: CreateBookArgs) => {
   const response = await axios.post<{ message: string; data: Book }>(
     `${process.env.API_BASE_URL}/books`,
     bookPayload
+  )
+  return response.data
+})
+
+// Async action to edit a book
+export const editBook = createAsyncThunk<
+  { message: string; data: Book },
+  EditBookArgs
+>('books/editBook', async ({ bookId, payload }: EditBookArgs) => {
+  const response = await axios.patch<{ message: string; data: Book }>(
+    `${process.env.API_BASE_URL}/books/${bookId}`,
+    payload
+  )
+  return response.data
+})
+
+// Async action to delete a book
+export const deleteBook = createAsyncThunk<
+  { message: string; data: Book },
+  number
+>('books/deleteBook', async (bookId: number) => {
+  const response = await axios.delete<{ message: string; data: Book }>(
+    `${process.env.API_BASE_URL}/books/${bookId}`
   )
   return response.data
 })
@@ -136,6 +165,38 @@ const bookSlice = createSlice({
         }
       )
       .addCase(createBook.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message ?? 'Unknown error'
+      })
+      .addCase(editBook.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(
+        editBook.fulfilled,
+        (state, action: PayloadAction<{ message: string; data: Book }>) => {
+          state.status = 'succeeded'
+          state.books.rows = state.books.rows.map((book) =>
+            book.id === action.payload.data.id ? action.payload.data : book
+          )
+        }
+      )
+      .addCase(editBook.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message ?? 'Unknown error'
+      })
+      .addCase(deleteBook.pending, (state) => {
+        state.status = 'loading'
+      })
+      .addCase(
+        deleteBook.fulfilled,
+        (state, action: PayloadAction<{ message: string; data: Book }>) => {
+          state.status = 'succeeded'
+          state.books.rows = state.books.rows.filter(
+            (book) => book.id !== action.payload.data.id
+          )
+        }
+      )
+      .addCase(deleteBook.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message ?? 'Unknown error'
       })

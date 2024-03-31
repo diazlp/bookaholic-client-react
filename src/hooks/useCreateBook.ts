@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../store'
-import { CreateBookPayload, createBook } from '../store/slices/booksSlice'
+import { CreateBookArgs, createBook } from '../store/slices/booksSlice'
 
-const initialCreateBookPayload: CreateBookPayload = {
+const initialCreateBookPayload: CreateBookArgs = {
   title: '',
   description: '',
   image_url: '',
@@ -16,7 +16,7 @@ const initialCreateBookPayload: CreateBookPayload = {
 interface useCreateCategoryResult {
   addBookVisible: boolean
   isValidYear: boolean
-  createBookPayload: CreateBookPayload
+  createBookPayload: CreateBookArgs
   setAddBookVisible: React.Dispatch<React.SetStateAction<boolean>>
   handleCancelAddBook: () => void
   handleConfirmAddBook: () => void
@@ -29,7 +29,7 @@ const useCreateBook = (): useCreateCategoryResult => {
   const dispatch: AppDispatch = useDispatch()
   const [addBookVisible, setAddBookVisible] = useState<boolean>(false)
   const [isValidYear, setIsValidYear] = useState<boolean>(true)
-  const [createBookPayload, setCreateBookPayload] = useState<CreateBookPayload>(
+  const [createBookPayload, setCreateBookPayload] = useState<CreateBookArgs>(
     initialCreateBookPayload
   )
 
@@ -56,7 +56,7 @@ const useCreateBook = (): useCreateCategoryResult => {
       createBook({
         ...createBookPayload,
         price: 'IDR ' + createBookPayload.price
-      }) as any
+      })
     )
     setAddBookVisible(false)
     setCreateBookPayload(initialCreateBookPayload)

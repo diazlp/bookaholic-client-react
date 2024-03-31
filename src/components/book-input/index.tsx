@@ -1,7 +1,8 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { CiCirclePlus } from 'react-icons/ci'
 import { IoCloseCircleOutline, IoCheckmarkCircleOutline } from 'react-icons/io5'
-import useFetchCategories from '../../hooks/useFetchCategories'
+import { RootState } from '../../store'
 import useCreateBook from '../../hooks/useCreateBook'
 
 const BookInput: React.FC = () => {
@@ -14,7 +15,7 @@ const BookInput: React.FC = () => {
     handleConfirmAddBook,
     handleInputChange
   } = useCreateBook()
-  const { categories } = useFetchCategories()
+  const { categories } = useSelector((state: RootState) => state.categories)
 
   if (!addBookVisible) {
     return (
@@ -32,7 +33,9 @@ const BookInput: React.FC = () => {
       <div className="rounded overflow-hidden shadow-lg">
         <div className="flex flex-col px-6 py-4 h-[680px]">
           <div className="my-32">
-            <label htmlFor="image_url">Book Image URL:</label>
+            <label htmlFor="image_url" className="font-semibold text-sm">
+              Book Image URL:
+            </label>
             <input
               type="text"
               name="image_url"
@@ -107,7 +110,7 @@ const BookInput: React.FC = () => {
                 value={createBookPayload.category_id}
                 onChange={handleInputChange}
               >
-                {categories.map((category) => (
+                {categories.rows?.map((category) => (
                   <option value={category.id} key={category.id}>
                     {category.name}
                   </option>

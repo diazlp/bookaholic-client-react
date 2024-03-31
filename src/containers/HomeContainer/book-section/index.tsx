@@ -18,12 +18,16 @@ const BookSection: React.FC = () => {
     return books.map((book) => (
       <BookCard
         key={book.title}
+        id={book.id}
         title={book.title}
         description={book.description}
         image_url={book.image_url}
         release_year={book.release_year}
         price={book.price}
         total_page={book.total_page}
+        category_id={
+          (book.Category?.id as number) || (book.category_id as number)
+        }
       />
     ))
   }

@@ -28,7 +28,7 @@ const useCreateCategory = (): useCreateCategoryResult => {
 
   const handleConfirmAddCategory = () => {
     if (newCategoryName) {
-      dispatch(createCategory(newCategoryName) as any)
+      dispatch(createCategory(newCategoryName))
       setAddCategoryVisible(false)
       setNewCategoryName('')
     }

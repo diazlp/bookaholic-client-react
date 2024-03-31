@@ -40,13 +40,13 @@ const useSearchBooks = (): useSearchBooksResult => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      dispatch(fetchBooks(searchBookParams) as any)
+      dispatch(fetchBooks(searchBookParams))
       setSearchFilterVisible(false)
     }
   }
 
   const handleSearchBook = () => {
-    dispatch(fetchBooks(searchBookParams) as any)
+    dispatch(fetchBooks(searchBookParams))
     setSearchFilterVisible(false)
   }
 
