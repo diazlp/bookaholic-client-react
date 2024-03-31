@@ -1,9 +1,10 @@
-import { useState, ChangeEvent } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../store'
-import { fetchBookQueryParams, fetchBooks } from '../store/slices/booksSlice'
+import { fetchBooks, updateSearchBookParams } from '../store/slices/booksSlice'
+import { fetchQueryParams } from '../lib/interfaces'
 
-const initialSearchFilter: fetchBookQueryParams = {
+const initialSearchFilter: fetchQueryParams = {
   title: '',
   minYear: 1900,
   maxYear: 2024,
@@ -14,7 +15,7 @@ const initialSearchFilter: fetchBookQueryParams = {
 
 interface useSearchBooksResult {
   searchFilterVisible: boolean
-  searchBookParams: fetchBookQueryParams
+  searchBookParams: fetchQueryParams
   handleInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void
@@ -27,7 +28,11 @@ const useSearchBooks = (): useSearchBooksResult => {
   const dispatch: AppDispatch = useDispatch()
   const [searchFilterVisible, setSearchFilterVisible] = useState<boolean>(false)
   const [searchBookParams, setSearchBookParams] =
-    useState<fetchBookQueryParams>(initialSearchFilter)
+    useState<fetchQueryParams>(initialSearchFilter)
+
+  useEffect(() => {
+    dispatch(updateSearchBookParams(searchBookParams))
+  }, [searchBookParams, dispatch])
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { fetchQueryParams } from '../../lib/interfaces'
 
 export interface Book {
   id: number
@@ -21,15 +22,12 @@ export interface BookState {
   books: { count: number; rows: Book[] }
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
+  searchBookParams: fetchQueryParams
 }
 
-export interface fetchBookQueryParams {
-  title?: string
-  minYear?: number
-  maxYear?: number
-  minPage?: number
-  maxPage?: number
-  sortByTitle?: 'ASC' | 'DESC' | ''
+interface CategoryBooksArgs {
+  id: number
+  params?: fetchQueryParams
 }
 
 export interface CreateBookArgs {
@@ -50,8 +48,8 @@ interface EditBookArgs {
 // Async action to fetch books
 export const fetchBooks = createAsyncThunk<
   { count: number; rows: Book[] },
-  fetchBookQueryParams | undefined
->('books/fetchBooks', async (params: fetchBookQueryParams | undefined) => {
+  fetchQueryParams | undefined
+>('books/fetchBooks', async (params: fetchQueryParams | undefined) => {
   let url = `${process.env.API_BASE_URL}/books`
 
   if (params) {
@@ -69,11 +67,17 @@ export const fetchCategoryBooks = createAsyncThunk<
     count: number
     rows: Book[]
   },
-  number
->('books/fetchCategoryBooks', async (id: number) => {
-  const response = await axios.get<{ count: number; rows: Book[] }>(
-    `${process.env.API_BASE_URL}/categories/${id}/books`
-  )
+  CategoryBooksArgs
+>('books/fetchCategoryBooks', async ({ id, params }: CategoryBooksArgs) => {
+  let url = `${process.env.API_BASE_URL}/categories/${id}/books`
+
+  if (params) {
+    const queryString = new URLSearchParams(params as any).toString()
+    url += `?${queryString}`
+  }
+
+  const response = await axios.get<{ count: number; rows: Book[] }>(url)
+
   return response.data
 })
 
@@ -121,9 +125,21 @@ const bookSlice = createSlice({
       rows: []
     },
     status: 'idle',
-    error: null
+    error: null,
+    searchBookParams: {
+      title: '',
+      minYear: 1900,
+      maxYear: 2024,
+      minPage: 0,
+      maxPage: 10000,
+      sortByTitle: ''
+    }
   } as BookState,
-  reducers: {},
+  reducers: {
+    updateSearchBookParams(state, action: PayloadAction<fetchQueryParams>) {
+      state.searchBookParams = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBooks.pending, (state) => {
@@ -202,5 +218,7 @@ const bookSlice = createSlice({
       })
   }
 })
+
+export const { updateSearchBookParams } = bookSlice.actions
 
 export default bookSlice.reducer

@@ -9,7 +9,7 @@ interface useFetchBooksResult extends Omit<BookState, 'books'> {
 
 const useFetchBooks = (): useFetchBooksResult => {
   const dispatch: AppDispatch = useDispatch()
-  const { books, status, error } = useSelector(
+  const { books, status, error, searchBookParams } = useSelector(
     (state: RootState) => state.books
   )
 
@@ -20,7 +20,8 @@ const useFetchBooks = (): useFetchBooksResult => {
   return {
     books: books.rows,
     status,
-    error
+    error,
+    searchBookParams
   }
 }
 

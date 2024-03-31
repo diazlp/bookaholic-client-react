@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from 'react'
-import { fetchBookQueryParams } from '../../../store/slices/booksSlice'
+import { fetchQueryParams } from '../../../lib/interfaces'
 
 type FilterOptionProps = {
-  searchBookParams: fetchBookQueryParams
+  searchBookParams: fetchQueryParams
   handleInputChange: (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void
