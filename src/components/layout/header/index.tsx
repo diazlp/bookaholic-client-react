@@ -1,5 +1,8 @@
 import React from 'react'
-import { FaRegHeart, FaRegUser } from 'react-icons/fa'
+import {
+  // FaRegHeart,
+  FaRegUser
+} from 'react-icons/fa'
 
 const Header: React.FC = () => {
   return (
@@ -10,7 +13,7 @@ const Header: React.FC = () => {
             📘 Bookaholic
           </div>
           <div className="flex items-center gap-5">
-            <FaRegHeart size={20} className="cursor-pointer" />
+            {/* <FaRegHeart size={20} className="cursor-pointer" /> */}
             <FaRegUser size={20} className="cursor-pointer" />
           </div>
         </div>
