@@ -126,8 +126,16 @@ const BookInput: React.FC = () => {
                 />
                 <IoCheckmarkCircleOutline
                   size={30}
-                  color="#3A96DD"
-                  className="cursor-pointer"
+                  color={
+                    Object.values(createBookPayload).some((value) => !value)
+                      ? '#EBEBE4'
+                      : '#3A96DD'
+                  }
+                  className={
+                    Object.values(createBookPayload).some((value) => !value)
+                      ? 'cursor-not-allowed'
+                      : 'cursor-pointer'
+                  }
                   onClick={handleConfirmAddBook}
                 />
               </div>

@@ -211,8 +211,16 @@ const BookCard: React.FC<BookCardProps> = ({
                   />
                   <IoCheckmarkCircleOutline
                     size={30}
-                    color="#3A96DD"
-                    className="cursor-pointer"
+                    color={
+                      Object.values(editBookPayload).some((value) => !value)
+                        ? '#EBEBE4'
+                        : '#3A96DD'
+                    }
+                    className={
+                      Object.values(editBookPayload).some((value) => !value)
+                        ? 'cursor-not-allowed'
+                        : 'cursor-pointer'
+                    }
                     onClick={() => handleConfirmEditBook(id)}
                   />
                 </div>

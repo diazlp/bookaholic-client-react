@@ -55,8 +55,10 @@ const CategoryInput: React.FC<CategoryInputProps> = ({
           />
           <IoCheckmarkCircleOutline
             size={60}
-            color="#3A96DD"
-            className="cursor-pointer"
+            color={!newCategoryName ? '#EBEBE4' : '#3A96DD'}
+            className={
+              !newCategoryName ? 'cursor-not-allowed' : 'cursor-pointer'
+            }
             onClick={handleConfirmAddCategory}
           />
         </div>
